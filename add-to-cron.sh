@@ -2,6 +2,14 @@
 
 cd $(dirname "$0")
 
+commandstem="python3 ksetwallpaper/ksetwallpaper.py"
+
+# escaped '/' and '.'
+sedcmdstem="python3 ksetwallpaper\/ksetwallpaper\.py"
+
+# remove all previous commands of this script from the crontab
+crontab -l | sed -r "/.+$sedcmdstem.*/d" | crontab -
+
 # find lines start with '#', leading whitespace allowed
 commentpattern="\s*#.*"
 
@@ -10,9 +18,6 @@ commentpattern="\s*#.*"
 # group 3: filename
 # group 5: time interval for dir (can be empty)
 filterpattern="\s*(([^\s]+\s+){5})([^\s]+)\s*(\s+(\d+)){0,1}$"
-
-#TODO remove old file from crontab
-#TODO delete old generated file
 
 while read line; do
     if [[ $line =~ $commentpattern ]]; then
@@ -32,13 +37,13 @@ while read line; do
         if [ "$interval" = "" ]; then
             interval="1800"
         fi
-        command="${timecmd}python3 ksetwallpaper/ksetwallpaper.py -d $filename -t $interval"
-        echo "-> $command"
+        command="${timecmd}$commandstem -d $filename -t $interval"
+        echo -e "$(crontab -l)\n$command" | crontab -
     elif [ -f $filename ]; then
         # filename is single file
         echo "adding file \"$filename\""
-        command="${timecmd}python3 ksetwallpaper/ksetwallpaper.py --file $filename"
-        echo "-> $command"
+        command="${timecmd}$commandstem --file $filename"
+        echo "$(crontab -l)\n$command" | crontab -
     else
         # filename does not exist
         echo "file \"$filename\" not found!"
