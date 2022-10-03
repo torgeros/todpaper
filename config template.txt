@@ -1,0 +1,5 @@
+# to activate: rename file to config.txt
+0  5 * * * /path/to/morning.jpg
+0  8 * * * /path/to/day.jpg
+0 18 * * * /path/to/evening.jpg
+0 20 * * * /path/to/night.jpg
