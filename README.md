@@ -17,7 +17,7 @@ Time syntax as in crontab:
 | | | .---------- month (1 - 12)
 | | | | .-------- day of week (0 - 6) (Sunday=0 or 7)
 | | | | |
-* * * * * task
+* * * * * /path/to/wallpaper.png
 ```
 
 Note that text notation like `jan,feb,mar ...` for month is not allowed. Day of week does not work and is treated as `'*'`.
