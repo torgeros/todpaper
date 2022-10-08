@@ -15,7 +15,7 @@ Time syntax as in crontab:
 | .-------------- hour (0 - 23)
 | | .------------ day of month (1 - 31)
 | | | .---------- month (1 - 12)
-| | | | .-------- day of week (0 - 6) (Sunday=0 or 7)
+| | | | .-------- day of week (IGNORED IN CURRENT SETUP)
 | | | | |
 * * * * * /path/to/wallpaper.png
 ```
