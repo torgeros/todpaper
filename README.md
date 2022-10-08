@@ -8,6 +8,8 @@ Uses [ksetwallpaper](https://github.com/pashazz/ksetwallpaper) to set the wallpa
 
 ### Config file
 
+The name of the config file is `config.txt`, there is a template in `config template.txt`.
+
 Time syntax as in crontab:
 
 ```plain
