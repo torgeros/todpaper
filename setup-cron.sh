@@ -2,21 +2,31 @@
 
 cd $(dirname "$0")
 
+###################################################################################################
+# SECTION 1: setup login task
+
+storexdbuscmd="$(pwd)/login-job.sh"
+
+if ! grep -Fxq "$storexdbuscmd" ~/.profile; then
+    echo did not find login job in ~/.profile, adding.
+    echo "" >> ~/.profile
+    echo "$storexdbuscmd" >> ~/.profile
+else
+    echo login job already registered
+fi
+
+###################################################################################################
+# SECTION 2: setup cronjob
+
 # generate a pattern for pwd, escaping '/' and '.'
 sedpwd=$(echo $(pwd) | sed 's/\//\\\//g' | sed 's/\./\\./g')
 
-commandstem="python3 $(pwd)/ksetwallpaper/ksetwallpaper.py"
+applycommand="$(pwd)/apply-current.sh"
 
-sedcmdstem="python3 ${sedpwd}\/ksetwallpaper\/ksetwallpaper\.py"
-
-# command to set current wallpaper at boot in the case the last boot was in a different time section
-runatboot="@reboot $(pwd)/apply-current.sh"
-
-sedrunatboot="@reboot ${sedpwd}\/apply-current\.sh"
+sedapplycommand="${sedpwd}\/apply-current\.sh"
 
 # remove all previous commands of this script from the crontab
-crontab -l | sed -r "/.+$sedcmdstem.*/d" | crontab -
-crontab -l | sed -r "/$sedrunatboot/d" | crontab -
+crontab -l | sed -r "/.+$sedapplycommand.*/d" | crontab -
 
 # find lines start with '#', leading whitespace allowed
 commentpattern='[[:space:]]*#.*'
@@ -39,22 +49,12 @@ while read line; do
     timecmd=$(echo "${BASH_REMATCH[1]}" | sed -r 's/\s+/ /g' | sed 's/^ //')
     # get filename from line
     filename="${BASH_REMATCH[3]}"
-
-    if [ -d $filename ]; then
-        # filename is directory
-        echo "directories are not supported"
-        exit 1
-    elif [ -f $filename ]; then
-        # filename is single file
-        echo "adding file \"$filename\""
-        command="${timecmd}$commandstem --file $filename"
-        echo -e "$(crontab -l)\n$command" | crontab -
-    else
-        # filename does not exist
-        echo "file \"$filename\" not found!"
-        exit 1
-    fi
+    echo "adding command for \"$filename\""
+    echo -e "$(crontab -l)\n$timecmd$applycommand" | crontab -
 done < config.txt
 
 echo -e "$(crontab -l)\n$runatboot" | crontab -
+
+###################################################################################################
+# SECTION 3: apply config now
 ./apply-current.sh
