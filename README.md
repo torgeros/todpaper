@@ -2,7 +2,7 @@
 
 Wallpaper utility for KDE.
 
-Uses [ksetwallpaper]https://github.com/pashazz/ksetwallpaper) to set the wallpaper to different slideshows for different parts of the day.
+Uses [ksetwallpaper](https://github.com/pashazz/ksetwallpaper) to set the wallpaper to different slideshows for different parts of the day.
 
 ## How to use
 
