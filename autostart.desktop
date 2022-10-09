@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=/home/torge/git_repos/todpaper/apply-current.sh
+Icon=
+Name=todpaper - apply current
+Path=
+Terminal=True
+Type=Application

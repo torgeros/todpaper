@@ -2,9 +2,6 @@
 
 cd $(dirname "$0")
 
-echo applying current config
-./apply-current.sh
-
 echo setting up Xdbus file
 # https://unix.stackexchange.com/a/111190/243409
 touch $(pwd)/Xdbus

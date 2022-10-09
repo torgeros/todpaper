@@ -3,12 +3,15 @@
 cd $(dirname "$0")
 
 # get DBUS ENVIRONMENT in case this script is run from e.g. a cronjob
-if [ -r "$(pwd)/Xdbus" ]; then
-    . "$(pwd)/Xdbus"
-fi
+# if DBUS_SESSION_BUS_ADDRESS is not set by the script, exit with code 1
 if [ "$DBUS_SESSION_BUS_ADDRESS" == "" ]; then
-    echo "DBUS_SESSION_BUS_ADDRESS is not set, can't set wallpaper from current context"
-    exit 1
+    if [ -r "$(pwd)/Xdbus" ]; then
+        . "$(pwd)/Xdbus"
+    fi
+    if [ "$DBUS_SESSION_BUS_ADDRESS" == "" ]; then
+        echo "DBUS_SESSION_BUS_ADDRESS is not set, can't set wallpaper from current context"
+        exit 1
+    fi
 fi
 
 commandstem="python3 $(pwd)/ksetwallpaper/ksetwallpaper.py"

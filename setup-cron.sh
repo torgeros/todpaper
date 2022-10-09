@@ -3,17 +3,11 @@
 cd $(dirname "$0")
 
 ###################################################################################################
-# SECTION 1: setup login task
+# SECTION 1: setup dbus reference for cron, setup autostart
 
-storexdbuscmd="$(pwd)/login-job.sh"
-
-if ! grep -Fxq "$storexdbuscmd" ~/.profile; then
-    echo did not find login job in ~/.profile, adding.
-    echo "" >> ~/.profile
-    echo "$storexdbuscmd" >> ~/.profile
-else
-    echo login job already registered
-fi
+./create-xdbus-file.sh
+cp -f autostart.desktop $HOME/.config/autostart/todpaper.desktop
+echo "added autostart entry to set wallpaper on boot."
 
 ###################################################################################################
 # SECTION 2: setup cronjob
